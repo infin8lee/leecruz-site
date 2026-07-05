@@ -472,6 +472,38 @@
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
   .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* AGENTS / AUTOMATIONS (extends existing section + grid + belt patterns) */
+  .subhead {
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .agents-block { margin-bottom: 56px; }
+  .agents-block:last-child { margin-bottom: 0; }
+
+  .solved-list { display: flex; flex-direction: column; }
+  .solved-row {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 4px 24px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .solved-row:last-child { border-bottom: none; }
+  .solved-row .type {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+  .solved-row .solved { font-size: 14px; color: var(--ink-dim); }
+  @media (max-width: 620px) {
+    .solved-row { grid-template-columns: 1fr; gap: 4px; }
+  }
 </style>
 </head>
 <body>
@@ -482,6 +514,7 @@
     <ul>
       <li><a href="#about">about</a></li>
       <li><a href="#work">work</a></li>
+      <li><a href="#agents">agents</a></li>
       <li><a href="#skills">skills</a></li>
       <li><a href="#contact">contact</a></li>
     </ul>
@@ -522,16 +555,17 @@
     <div class="about-copy reveal">
       <span class="section-label">About</span>
       <h2 class="section-title">Two disciplines,<br>one build process.</h2>
-      <p style="margin-top:24px;">I run a small practice building <strong>self-hosted AI agent infrastructure</strong> — named agents that live in Slack and client portals, handle routing, moderation, and reporting, and stay online with real uptime discipline, not just prototype polish.</p>
+      <p style="margin-top:24px;">This practice started out of necessity. Working as an <strong>Executive Assistant</strong>, I kept automating pieces of my own role — inbox triage, scheduling, follow-ups — until building the systems became the more interesting job.</p>
+      <p>Today I run a small practice building <strong>self-hosted AI agent infrastructure</strong> — named agents that live in Slack and client portals, handle routing, moderation, and reporting, and stay online with real uptime discipline, not just prototype polish.</p>
       <p>Alongside that, I build <strong>interactive, visually-driven web products</strong> — animated globes, live simulators, and launch sites — designed prompt by prompt with a focus on getting the details exactly right rather than shipping the first pass.</p>
       <p>Clients get both sides: the invisible system that runs reliably, and the visible product people actually enjoy using.</p>
     </div>
     <div class="status-panel reveal">
-      <div class="title">Active systems</div>
-      <div class="status-row"><span><span class="dot"></span><span class="name">Agent Alpha</span></span><span>online</span></div>
-      <div class="status-row"><span><span class="dot"></span><span class="name">Router</span></span><span>routing</span></div>
-      <div class="status-row"><span><span class="dot"></span><span class="name">Support Bot</span></span><span>online</span></div>
-      <div class="status-row"><span><span class="dot"></span><span class="name">Core Platform</span></span><span>stable</span></div>
+      <div class="title">By the numbers</div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Web products</span></span><span>4 live</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Automations</span></span><span>7 running</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">AI agents</span></span><span>6 shipped</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Uptime</span></span><span>stable</span></div>
     </div>
   </div>
 </section>
@@ -540,49 +574,88 @@
   <div class="wrap">
     <div class="section-head reveal">
       <span class="section-label">Selected Work</span>
-      <h2 class="section-title">Agents in production,<br>sites in the wild.</h2>
+      <h2 class="section-title">Shipped products,<br>live in the wild.</h2>
     </div>
     <div class="projects-grid reveal">
       <div class="project-card">
-        <span class="project-tag">Agent Infrastructure</span>
-        <h3>Multi-Agent Platform</h3>
-        <p>Self-hosted AI agent platform running on VPS infrastructure with process management, multi-model routing, and dual-approval security for sensitive data access.</p>
+        <span class="project-tag">Interactive 3D</span>
+        <h3>Iceland Eclipse Flight</h3>
+        <p>A browser flight simulator over real Icelandic terrain, timed to a real total solar eclipse — true elevation data, a full day-to-totality light cycle, and a land-on-the-mark win moment.</p>
         <div class="stack-row">
-          <span class="stack-chip">Node.js</span>
-          <span class="stack-chip">PM2</span>
-          <span class="stack-chip">Claude API</span>
-          <span class="stack-chip">Slack</span>
+          <span class="stack-chip">Three.js</span>
+          <span class="stack-chip">Real terrain data</span>
+          <span class="stack-chip">Custom domain</span>
         </div>
       </div>
       <div class="project-card">
-        <span class="project-tag">Interactive Web</span>
-        <h3>Live Event Explorer</h3>
-        <p>Interactive globe-based web app for a major astronomical event, with live path overlays, community voting, and a full editorial blog built for SEO.</p>
+        <span class="project-tag">Interactive 3D</span>
+        <h3>Egypt Eclipse Flight</h3>
+        <p>A companion build: a hot-air balloon ride over Luxor's real skyline, thousands of real building footprints, and an eclipse placed to the minute using cross-checked astronomical data.</p>
         <div class="stack-row">
-          <span class="stack-chip">react-globe.gl</span>
-          <span class="stack-chip">Lovable</span>
-          <span class="stack-chip">Responsive</span>
+          <span class="stack-chip">Three.js</span>
+          <span class="stack-chip">Real geography</span>
+          <span class="stack-chip">Verified accuracy</span>
         </div>
       </div>
       <div class="project-card">
-        <span class="project-tag">Simulation</span>
-        <h3>Browser Simulator</h3>
-        <p>Browser-based simulation experience with entity-driven terrain rendering and real-time interaction logic.</p>
+        <span class="project-tag">Browser Game</span>
+        <h3>Eclipse Descent</h3>
+        <p>A playable ski game on the same real-time eclipse engine as the flight sims — a relaxed free-ride mode, a three-tier challenge mode, and a fully custom sound design.</p>
         <div class="stack-row">
-          <span class="stack-chip">Lovable</span>
-          <span class="stack-chip">Game Logic</span>
-          <span class="stack-chip">WebGL</span>
+          <span class="stack-chip">Three.js</span>
+          <span class="stack-chip">Game design</span>
+          <span class="stack-chip">WebAudio</span>
         </div>
       </div>
       <div class="project-card">
-        <span class="project-tag">Client Delivery</span>
-        <h3>White-Label Agents</h3>
-        <p>Custom-branded AI agent deployments for external clients, covering portal-facing bot presentation, content pipelines, and workflow automation.</p>
+        <span class="project-tag">Interactive Map</span>
+        <h3>Australasia Eclipse 2028</h3>
+        <p>Rebuilt an early prototype into a full interactive site — a live map and a spinning 3D globe for picking a viewing spot, backed by computed eclipse timing instead of guesswork.</p>
         <div class="stack-row">
-          <span class="stack-chip">White-label</span>
-          <span class="stack-chip">Automation</span>
-          <span class="stack-chip">Portal UX</span>
+          <span class="stack-chip">3D globe</span>
+          <span class="stack-chip">Astronomical modeling</span>
+          <span class="stack-chip">Static site</span>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agents">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-label">Behind the Scenes</span>
+      <h2 class="section-title">Automations and agents,<br>handling the repetitive parts.</h2>
+    </div>
+
+    <div class="agents-block reveal">
+      <div class="subhead">Running quietly in the background</div>
+      <div class="solved-list">
+        <div class="solved-row"><span class="type">Social content scheduling</span><span class="solved">Kept a content calendar consistently filled without daily manual posting.</span></div>
+        <div class="solved-row"><span class="type">Engagement prioritization</span><span class="solved">Focused daily engagement time on the people most likely to actually respond.</span></div>
+        <div class="solved-row"><span class="type">Inbox triage &amp; alerts</span><span class="solved">Stopped important messages from getting buried in day-to-day email volume.</span></div>
+        <div class="solved-row"><span class="type">Priority email routing</span><span class="solved">Separated what needed a same-day response from what could wait.</span></div>
+        <div class="solved-row"><span class="type">Performance reporting</span><span class="solved">Replaced guesswork with a regular, plain read on what was actually working.</span></div>
+        <div class="solved-row"><span class="type">System health monitoring</span><span class="solved">Caught stalled or failing jobs early, before they turned into bigger problems.</span></div>
+        <div class="solved-row"><span class="type">Session memory &amp; continuity</span><span class="solved">Stopped long-running conversations from losing context or resetting mid-task.</span></div>
+      </div>
+    </div>
+
+    <div class="agents-block reveal">
+      <div class="subhead">The platform underneath it all</div>
+      <p style="color:var(--ink-dim); font-size:15px; max-width:640px;">Every agent below runs on a self-hosted multi-agent platform handling scheduling, memory, and routing — so each specialized agent can focus on one job instead of rebuilding the plumbing every time.</p>
+    </div>
+
+    <div class="agents-block reveal">
+      <div class="subhead">Specialized agents built on top</div>
+      <p style="color:var(--ink-dim); font-size:15px; max-width:640px; margin-bottom:20px;">Six purpose-built agents run on that platform for a single long-term client, each handling one slice of the day-to-day workload. Specifics belong to the client, but the coverage looks like:</p>
+      <div class="solved-list">
+        <div class="solved-row"><span class="type">Lead generation</span><span class="solved">Manual prospecting was slow; automated sourcing kept a pipeline consistently full.</span></div>
+        <div class="solved-row"><span class="type">Content &amp; voice</span><span class="solved">Voiceover and transcription no longer bottlenecked on one person's time.</span></div>
+        <div class="solved-row"><span class="type">Inbox monitoring</span><span class="solved">Time-sensitive messages got seen and handled quickly, not hours later.</span></div>
+        <div class="solved-row"><span class="type">Social engagement</span><span class="solved">Kept up consistent day-to-day engagement without someone doing it by hand.</span></div>
+        <div class="solved-row"><span class="type">Analytics</span><span class="solved">Decisions were based on a regular read of real data instead of guesswork.</span></div>
+        <div class="solved-row"><span class="type">Event logistics</span><span class="solved">Routine coordination for a live event didn't fall on one person to track.</span></div>
       </div>
     </div>
   </div>
@@ -595,10 +668,11 @@
       <h2 class="section-title">What I build with.</h2>
     </div>
     <div class="skills-belt reveal">
-      <span class="skill-pill core">AI Agent Design</span>
-      <span class="skill-pill core">Claude / Anthropic API</span>
+      <span class="skill-pill">AI Agent Design</span>
+      <span class="skill-pill">Claude / Anthropic API</span>
       <span class="skill-pill">Slack Platform</span>
       <span class="skill-pill">Node.js</span>
+      <span class="skill-pill">JSON</span>
       <span class="skill-pill">Prompt Engineering</span>
       <span class="skill-pill">Lovable / Vibe Coding</span>
       <span class="skill-pill">React</span>
@@ -617,9 +691,6 @@
       <div class="contact-links" style="margin-top:32px;">
         <a class="contact-link" href="mailto:support@virtual-lee.com">
           <span class="k">Email</span><span class="v">support@virtual-lee.com</span>
-        </a>
-        <a class="contact-link" href="#">
-          <span class="k">LinkedIn</span><span class="v">/in/leecruz</span>
         </a>
         <a class="contact-link" href="https://github.com/infin8lee" target="_blank" rel="noopener">
           <span class="k">GitHub</span><span class="v">github.com/infin8lee</span>
@@ -648,7 +719,7 @@
 <footer>
   <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
     <span>© 2026 Lee Cruz</span>
-    <span>Built dark, on purpose.</span>
+    <span>AI Agent &amp; Web Systems Development</span>
   </div>
 </footer>
 
