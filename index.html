@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lee Cruz — AI Agent & Web Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0E1A;
+    --surface: #12172A;
+    --surface-2: #171D33;
+    --ink: #E8E6DE;
+    --ink-dim: #9AA0B8;
+    --muted: #5A6178;
+    --corona: #E8B978;
+    --corona-dim: #a8804e;
+    --agent: #6FE3D9;
+    --line: rgba(232, 230, 222, 0.09);
+
+    --display: 'Fraunces', serif;
+    --mono: 'JetBrains Mono', monospace;
+    --body: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(232,230,222,0.4), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(232,230,222,0.3), transparent),
+      radial-gradient(1px 1px at 85% 60%, rgba(232,230,222,0.35), transparent),
+      radial-gradient(1px 1px at 40% 80%, rgba(232,230,222,0.25), transparent),
+      radial-gradient(1px 1px at 10% 65%, rgba(232,230,222,0.3), transparent),
+      radial-gradient(1px 1px at 55% 45%, rgba(232,230,222,0.2), transparent),
+      radial-gradient(1px 1px at 92% 90%, rgba(232,230,222,0.3), transparent);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+  }
+
+  a { color: inherit; }
+
+  ::selection { background: var(--corona); color: var(--bg); }
+
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--agent);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(11, 14, 26, 0.75);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .brand {
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand span { color: var(--corona); }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+  nav ul a {
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-dim);
+    letter-spacing: 0.03em;
+    transition: color 0.2s ease;
+  }
+  nav ul a:hover { color: var(--agent); }
+  @media (max-width: 640px) {
+    nav ul { display: none; }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 120px 0 100px;
+    display: flex;
+    align-items: center;
+    gap: 64px;
+    min-height: 78vh;
+  }
+  @media (max-width: 860px) {
+    .hero { flex-direction: column-reverse; text-align: center; padding: 80px 0 60px; gap: 48px; }
+  }
+
+  .hero-text { flex: 1.1; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--agent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  h1.name {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(48px, 7vw, 84px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h1.name em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--corona);
+  }
+
+  .hero-desc {
+    margin-top: 28px;
+    font-size: 18px;
+    color: var(--ink-dim);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+  @media (max-width: 860px) { .hero-desc { margin: 28px auto 0; } }
+
+  .hero-cta {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+  }
+  @media (max-width: 860px) { .hero-cta { justify-content: center; } }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 14px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    border: 1px solid transparent;
+  }
+  .btn-primary {
+    background: var(--corona);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: #f0c68e; transform: translateY(-1px); }
+  .btn-ghost {
+    border-color: var(--line);
+    color: var(--ink);
+  }
+  .btn-ghost:hover { border-color: var(--agent); color: var(--agent); }
+
+  /* ECLIPSE — signature element */
+  .eclipse-stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 280px;
+  }
+  .eclipse {
+    position: relative;
+    width: 260px;
+    height: 260px;
+  }
+  .corona-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, transparent 58%, var(--corona) 60%, rgba(232,185,120,0.15) 68%, transparent 72%);
+    filter: blur(2px);
+    animation: pulse 5s ease-in-out infinite;
+  }
+  .corona-ring::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, transparent 62%, rgba(232,185,120,0.35) 64%, transparent 70%);
+    animation: rotate 40s linear infinite;
+  }
+  .moon-disc {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 32%, #1c2138, #0B0E1A 70%);
+    box-shadow: 0 0 60px rgba(232,185,120,0.18), inset -8px -8px 24px rgba(0,0,0,0.6);
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+  }
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* SECTION SHARED */
+  section { padding: 100px 0; border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 56px; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--agent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  h2.section-title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(30px, 4vw, 42px);
+    margin-top: 12px;
+    color: var(--ink);
+  }
+  h2.section-title em { font-style: italic; color: var(--corona); font-weight: 400; }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+  }
+  @media (max-width: 780px) { .about-grid { grid-template-columns: 1fr; } }
+  .about-copy p { color: var(--ink-dim); font-size: 16px; margin-bottom: 18px; max-width: 560px; }
+  .about-copy strong { color: var(--ink); font-weight: 500; }
+
+  .status-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+    align-self: start;
+  }
+  .status-panel .title {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+  }
+  .status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0;
+    color: var(--ink-dim);
+  }
+  .status-row .dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--agent);
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--agent);
+  }
+  .status-row .name { color: var(--ink); }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  @media (max-width: 720px) { .projects-grid { grid-template-columns: 1fr; } }
+
+  .project-card {
+    background: var(--surface);
+    padding: 36px;
+    transition: background 0.25s ease;
+    position: relative;
+  }
+  .project-card:hover { background: var(--surface-2); }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--corona);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .project-card h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 24px;
+    margin: 14px 0 12px;
+    color: var(--ink);
+  }
+  .project-card p {
+    color: var(--ink-dim);
+    font-size: 14.5px;
+    margin-bottom: 18px;
+  }
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .stack-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    padding: 4px 9px;
+    border-radius: 20px;
+  }
+
+  /* SKILLS */
+  .skills-belt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .skill-pill {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 10px 18px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink-dim);
+  }
+  .skill-pill.core { color: var(--agent); border-color: rgba(111,227,217,0.3); }
+
+  /* CONTACT */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 780px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-links { display: flex; flex-direction: column; gap: 18px; }
+  .contact-link {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    text-decoration: none;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .contact-link .k {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .contact-link .v { color: var(--ink); font-size: 15px; transition: color 0.2s ease; }
+  .contact-link:hover .v { color: var(--corona); }
+
+  form { display: flex; flex-direction: column; gap: 16px; }
+  label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    display: block;
+  }
+  input, textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 14px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  input:focus, textarea:focus { border-color: var(--agent); }
+  .form-status {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--agent);
+    min-height: 20px;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+  @media (max-width: 500px) { footer { flex-direction: column; gap: 8px; text-align: center; } }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="brand">lee<span>·</span>cruz</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div id="top" class="wrap hero">
+  <div class="hero-text">
+    <span class="eyebrow">Freelance · AI Agents & Web Systems</span>
+    <h1 class="name">Lee Cruz<br><em>builds things<br>that run themselves.</em></h1>
+    <p class="hero-desc">I design and ship autonomous AI agent systems and vibe-coded web products — from Slack-native bots handling real workflows to interactive sites built for launch day, not just demo day.</p>
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-primary">See the work</a>
+      <a href="#contact" class="btn btn-ghost">Start a project</a>
+    </div>
+  </div>
+  <div class="eclipse-stage">
+    <div class="eclipse">
+      <div class="corona-ring"></div>
+      <div class="moon-disc"></div>
+    </div>
+  </div>
+</div>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy reveal">
+      <span class="section-label">About</span>
+      <h2 class="section-title">Two disciplines,<br><em>one build process.</em></h2>
+      <p style="margin-top:24px;">I run a small practice building <strong>self-hosted AI agent infrastructure</strong> — named agents that live in Slack and client portals, handle routing, moderation, and reporting, and stay online with real uptime discipline, not just prototype polish.</p>
+      <p>Alongside that, I build <strong>interactive, visually-driven web products</strong> — animated globes, live simulators, and launch sites — designed prompt by prompt with a focus on getting the details exactly right rather than shipping the first pass.</p>
+      <p>Clients get both sides: the invisible system that runs reliably, and the visible product people actually enjoy using.</p>
+    </div>
+    <div class="status-panel reveal">
+      <div class="title">Active systems</div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Agent Alpha</span></span><span>online</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Router</span></span><span>routing</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Support Bot</span></span><span>online</span></div>
+      <div class="status-row"><span><span class="dot"></span><span class="name">Core Platform</span></span><span>stable</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-label">Selected Work</span>
+      <h2 class="section-title">Agents in production,<br><em>sites in the wild.</em></h2>
+    </div>
+    <div class="projects-grid reveal">
+      <div class="project-card">
+        <span class="project-tag">Agent Infrastructure</span>
+        <h3>Multi-Agent Platform</h3>
+        <p>Self-hosted AI agent platform running on VPS infrastructure with process management, multi-model routing, and dual-approval security for sensitive data access.</p>
+        <div class="stack-row">
+          <span class="stack-chip">Node.js</span>
+          <span class="stack-chip">PM2</span>
+          <span class="stack-chip">Claude API</span>
+          <span class="stack-chip">Slack</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-tag">Interactive Web</span>
+        <h3>Live Event Explorer</h3>
+        <p>Interactive globe-based web app for a major astronomical event, with live path overlays, community voting, and a full editorial blog built for SEO.</p>
+        <div class="stack-row">
+          <span class="stack-chip">react-globe.gl</span>
+          <span class="stack-chip">Lovable</span>
+          <span class="stack-chip">Responsive</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-tag">Simulation</span>
+        <h3>Browser Simulator</h3>
+        <p>Browser-based simulation experience with entity-driven terrain rendering and real-time interaction logic.</p>
+        <div class="stack-row">
+          <span class="stack-chip">Lovable</span>
+          <span class="stack-chip">Game Logic</span>
+          <span class="stack-chip">WebGL</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-tag">Client Delivery</span>
+        <h3>White-Label Agents</h3>
+        <p>Custom-branded AI agent deployments for external clients, covering portal-facing bot presentation, content pipelines, and workflow automation.</p>
+        <div class="stack-row">
+          <span class="stack-chip">White-label</span>
+          <span class="stack-chip">Automation</span>
+          <span class="stack-chip">Portal UX</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="section-label">Toolkit</span>
+      <h2 class="section-title">What I build <em>with.</em></h2>
+    </div>
+    <div class="skills-belt reveal">
+      <span class="skill-pill core">AI Agent Design</span>
+      <span class="skill-pill core">Claude / Anthropic API</span>
+      <span class="skill-pill">Slack Platform</span>
+      <span class="skill-pill">Node.js</span>
+      <span class="skill-pill">Prompt Engineering</span>
+      <span class="skill-pill">Lovable / Vibe Coding</span>
+      <span class="skill-pill">React</span>
+      <span class="skill-pill">VPS / PM2 Ops</span>
+      <span class="skill-pill">Security Hardening</span>
+      <span class="skill-pill">SEO & Content Pipelines</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-grid">
+    <div class="reveal">
+      <span class="section-label">Contact</span>
+      <h2 class="section-title">Have a build<br><em>in mind?</em></h2>
+      <div class="contact-links" style="margin-top:32px;">
+        <a class="contact-link" href="mailto:hello@leecruz.dev">
+          <span class="k">Email</span><span class="v">hello@leecruz.dev</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="k">LinkedIn</span><span class="v">/in/leecruz</span>
+        </a>
+        <a class="contact-link" href="#">
+          <span class="k">GitHub</span><span class="v">github.com/leecruz</span>
+        </a>
+      </div>
+    </div>
+    <form id="contactForm" class="reveal">
+      <div>
+        <label for="cf-name">Name</label>
+        <input id="cf-name" name="name" type="text" required>
+      </div>
+      <div>
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" required>
+      </div>
+      <div>
+        <label for="cf-msg">What are you building?</label>
+        <textarea id="cf-msg" name="message" rows="4" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="cursor:pointer; border:none;">Send message</button>
+      <div class="form-status" id="formStatus"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%;">
+    <span>© 2026 Lee Cruz</span>
+    <span>Built dark, on purpose.</span>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Contact form — placeholder submit (no backend wired up yet)
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    status.textContent = 'Message noted — connect a form backend (e.g. Formspree) to send this live.';
+  });
+</script>
+
+</body>
+</html>
